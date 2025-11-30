@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserDocument(uid) {
+      return get(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function isAdmin() {
+      let user = getUserDocument(request.auth.uid);
+      return isSignedIn() && user.data != null && user.data.role == "admin";
+    }
+
+    function ownsExistingDoc() {
+      return isSignedIn() && resource != null && resource.data.ownerUid == request.auth.uid;
+    }
+
+    function ownsNewDoc() {
+      return isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read: if (isSignedIn() && request.auth.uid == userId) || isAdmin();
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /images/{imageId} {
+      allow read: if isAdmin() || ownsExistingDoc();
+      allow create: if ownsNewDoc();
+      allow update: if ownsExistingDoc() && ownsNewDoc();
+      allow delete: if ownsExistingDoc();
+    }
+
+    match /analyses/{analysisId} {
+      allow read: if isAdmin() || ownsExistingDoc();
+      allow create: if ownsNewDoc();
+      allow update: if ownsExistingDoc() && ownsNewDoc();
+      allow delete: if ownsExistingDoc();
+    }
+
+    match /documents/{documentId} {
+      allow read: if isAdmin() || ownsExistingDoc();
+      allow create: if ownsNewDoc();
+      allow update: if ownsExistingDoc() && ownsNewDoc();
+      allow delete: if ownsExistingDoc();
+    }
+  }
+}
