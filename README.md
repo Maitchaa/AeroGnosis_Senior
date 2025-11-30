@@ -12,7 +12,8 @@ The file consists of two main folders:
 
 1- GUI - contains the gui to be run on local host
 
-2- Models: contains the .py codes of the 4 used models
+2- Models: contains the .py codes of the 4 used models. The subdirectory SSS contains quantification code
+and experimental drone validation code. 
 
 IMPORTANT:
 
