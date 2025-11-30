@@ -1611,7 +1611,7 @@ class VOCDataset(data.Dataset):
 
         # safety check for shape issues
         if img.shape[:2] != mask.shape:
-            print(f"[⚠️] Shape mismatch at index {index}: img={img.shape}, mask={mask.shape}")
+            print(f"Shape mismatch at index {index}: img={img.shape}, mask={mask.shape}")
 
         # applying albumentation transgforms
         img, mask = self.transform(self.phase, img, mask)
@@ -1957,7 +1957,7 @@ print("="*70)
 model_phase2 = UNetCrackSegmentation.load_from_checkpoint(
     checkpoint_phase1.best_model_path,
     num_classes=2,
-    lr=0.0001,  # Lower LR
+    lr=0.0001,  # lower LR
     weight_decay=0.00001
 )
 
