@@ -328,7 +328,7 @@ width_error_1 = abs(results['max_width_mm'] - gt_measurements['image_1']['max_wi
 length_error_2 = abs(results_2['length_mm'] - gt_measurements['image_2']['length_mm'])
 width_error_2 = abs(results_2['max_width_mm'] - gt_measurements['image_2']['max_width_mm'])
 
-# display
+
 print("\nimage 1:")
 print(f"  length error:      {length_error_1:.2f} mm")
 print(f"  max width error:   {width_error_1:.2f} mm")
